@@ -24,6 +24,10 @@ def log_method(func):
     def wrapper(self, *args, **kwargs):
         # Extract function name and initialize logger
         func_name = func.__name__
+        if not hasattr(self, "logger") or not isinstance(self.logger, Logger):
+            raise ValueError(
+                "The class instance does not have a valid 'logger' of type Logger"
+            )
         logger: Logger = self.logger
         contract = None
         stage = None
@@ -96,17 +100,18 @@ def log_function(func):
     def wrapper(*args, **kwargs):
         # Extract function name and initialize logger
         func_name = func.__name__
-        logger: Logger = kwargs.get(
-            "logger"
-        )  # Expect logger to be passed as a keyword argument
+        logger: Logger = None
         contract = None
         stage = None
         entity_name = None
         row_count = None
+        for arg in args:
+            if isinstance(arg, Logger):
+                logger = arg
+                break
 
-        # Check if logger is provided
-        if logger is None:
-            raise ValueError("Logger instance is required as a keyword argument")
+        if not logger:
+            raise ValueError("A valid 'Logger' instance must be passed as an argument")
 
         # Check if Contract is imported and extract contract if present
         if Contract:
