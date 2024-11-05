@@ -144,3 +144,18 @@ class Logger:
             stage,
             entity_name,
         )
+
+
+def print_full_stack():
+    # Get the current call stack
+    stack = inspect.stack()
+
+    print("Full stack trace:")
+    for frame_info in stack:
+        # frame_info[0]: the frame object
+        # frame_info[1]: the filename
+        # frame_info[2]: the line number
+        # frame_info[3]: the function name
+        print(
+            f"File: {frame_info.filename}, Line: {frame_info.lineno}, Function: {frame_info.function}"
+        )
