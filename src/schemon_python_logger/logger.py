@@ -1,6 +1,7 @@
 import logging
 import time
 import inspect
+from schemon_python_logger.print import print_full_stack
 
 
 class ColoredFormatter(logging.Formatter):
@@ -70,15 +71,11 @@ class Logger:
         self.logger.warning(formatted_message)
 
     def error(self, message: str, stage: str = None, entity_name: str = None):
-        from schemon.notebook.helper.print import print_full_stack
-
         formatted_message = self.format_message(message, stage, entity_name)
         self.logger.error(formatted_message)
         print_full_stack()
 
     def critical(self, message: str, stage: str = None, entity_name: str = None):
-        from schemon.notebook.helper.print import print_full_stack
-
         formatted_message = self.format_message(message, stage, entity_name)
         self.logger.critical(formatted_message)
         print_full_stack()
@@ -143,19 +140,4 @@ class Logger:
             ),
             stage,
             entity_name,
-        )
-
-
-def print_full_stack():
-    # Get the current call stack
-    stack = inspect.stack()
-
-    print("Full stack trace:")
-    for frame_info in stack:
-        # frame_info[0]: the frame object
-        # frame_info[1]: the filename
-        # frame_info[2]: the line number
-        # frame_info[3]: the function name
-        print(
-            f"File: {frame_info.filename}, Line: {frame_info.lineno}, Function: {frame_info.function}"
         )
