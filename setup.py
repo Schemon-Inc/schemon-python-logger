@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 import subprocess
 
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 
 def create_git_tag(version):
