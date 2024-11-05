@@ -1,12 +1,12 @@
 from functools import wraps
 
 try:
-    from schemon.domain.contract.contract import Contract
+    from schemon.domain.contract.contract import Contract  # type: ignore
 except ImportError:
     Contract = None
 
 try:
-    from schemon.service.notebook.base.store_service import get_store
+    from schemon.service.notebook.base.store_service import get_store  # type: ignore
 except ImportError:
     get_store = None
 
