@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 import subprocess
 
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 
 
 def create_git_tag(version):
@@ -24,6 +24,7 @@ setup(
     license_files=["LICENSE"],  # Specify the license file
     install_requires=[],
     entry_points={},
+    python_requires=">=3.8",
     include_package_data=True,  # Include package data specified in MANIFEST.in
     package_data={},
     exclude_package_data={},
