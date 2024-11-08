@@ -1,4 +1,6 @@
 from functools import wraps
+import time
+from datetime import datetime
 
 try:
     from schemon.domain.contract.contract import Contract  # type: ignore
@@ -24,11 +26,9 @@ def log_method(func):
     def wrapper(self, *args, **kwargs):
         # Extract function name and initialize logger
         func_name = func.__name__
-        if not hasattr(self, "logger") or not isinstance(self.logger, Logger):
-            raise ValueError(
-                "The class instance does not have a valid 'logger' of type Logger"
-            )
-        logger: Logger = self.logger
+        logger: Logger = None
+        if hasattr(self, "logger") and isinstance(self.logger, Logger):
+            logger = self.logger
         contract = None
         stage = None
         entity_name = None
@@ -73,18 +73,33 @@ def log_method(func):
             else:
                 row_count = store.df.count()
 
-        # Log the function start
-        start_time = logger.log_function_start(stage, entity_name, func_name)
+        # Log the method start
+        if logger:
+            start_time = logger.log_function_start(stage, entity_name, func_name)
+        else:
+            start_time = time()
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print(
+                f"{now} | {func_name}() - Operation started",
+            )
 
         try:
             # Execute the wrapped function
             return_value = func(self, *args, **kwargs)
             return return_value
         finally:
-            # Log the function end
-            logger.log_function_end(
-                start_time, stage, entity_name, row_count, func_name
-            )
+            # Log the method end
+            if logger:
+                logger.log_function_end(
+                    start_time, stage, entity_name, row_count, func_name
+                )
+            else:
+                end_time = time.time()
+                duration = end_time - start_time
+                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                print(
+                    f"{now} | {func_name}() - Operation completed. Duration: {duration:.2f} seconds",
+                )
 
     return wrapper
 
@@ -109,9 +124,6 @@ def log_function(func):
             if isinstance(arg, Logger):
                 logger = arg
                 break
-
-        if not logger:
-            raise ValueError("A valid 'Logger' instance must be passed as an argument")
 
         # Check if Contract is imported and extract contract if present
         if Contract:
@@ -149,16 +161,31 @@ def log_function(func):
                 row_count = store.df.count()
 
         # Log the function start
-        start_time = logger.log_function_start(stage, entity_name, func_name)
+        if logger:
+            start_time = logger.log_function_start(stage, entity_name, func_name)
+        else:
+            start_time = time()
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print(
+                f"{now} | {func_name}() - Operation started",
+            )
 
         try:
             # Execute the wrapped function
             return_value = func(*args, **kwargs)
             return return_value
         finally:
-            # Log the function end
-            logger.log_function_end(
-                start_time, stage, entity_name, row_count, func_name
-            )
+            # Log the method end
+            if logger:
+                logger.log_function_end(
+                    start_time, stage, entity_name, row_count, func_name
+                )
+            else:
+                end_time = time.time()
+                duration = end_time - start_time
+                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                print(
+                    f"{now} | {func_name}() - Operation completed. Duration: {duration:.2f} seconds",
+                )
 
     return wrapper
