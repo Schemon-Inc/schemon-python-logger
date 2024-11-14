@@ -29,23 +29,29 @@ class SchemonPythonLogger:
     def __init__(self, name: str, log_file: str = "schemon.log", level: str = "DEBUG"):
         log_level = logging._nameToLevel.get(level.upper(), logging.DEBUG)
         print(f"CONFIG | Log level: {level}({log_level}) for {name}")
+
+        # Get the logger instance
         self.logger = logging.getLogger(name)
         self.logger.setLevel(log_level)
 
-        if not self.logger.hasHandlers():
-            console_handler = logging.StreamHandler()
-            if level == "DEBUG":
-                formatter = ColoredFormatter(
-                    "%(asctime)s.%(msecs)03d | %(levelname)s | %(threadName)s | %(message)s",
-                    datefmt="%Y-%m-%d %H:%M:%S",
-                )
-            else:
-                formatter = ColoredFormatter(
-                    "%(asctime)s.%(msecs)03d | %(levelname)s | %(message)s",
-                    datefmt="%Y-%m-%d %H:%M:%S",
-                )
-            console_handler.setFormatter(formatter)
-            self.logger.addHandler(console_handler)
+        # Remove any existing handlers to avoid conflicts
+        if self.logger.hasHandlers():
+            self.logger.handlers.clear()
+
+        # Configure the console handler with the ColoredFormatter
+        console_handler = logging.StreamHandler()
+        if level == "DEBUG":
+            formatter = ColoredFormatter(
+                "%(asctime)s.%(msecs)03d | %(levelname)s | %(threadName)s | %(message)s",
+                datefmt="%Y-%m-%d %H:%M:%S",
+            )
+        else:
+            formatter = ColoredFormatter(
+                "%(asctime)s.%(msecs)03d | %(levelname)s | %(message)s",
+                datefmt="%Y-%m-%d %H:%M:%S",
+            )
+        console_handler.setFormatter(formatter)
+        self.logger.addHandler(console_handler)
 
     def format_message(
         self, message: str, stage: str = None, entity_name: str = None
