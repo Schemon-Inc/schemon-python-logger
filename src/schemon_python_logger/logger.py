@@ -25,7 +25,7 @@ class ColoredFormatter(logging.Formatter):
         return f"{color}{message.replace(record.levelname, levelname_padded).replace(record.threadName, threadname_padded)}{self.RESET}"
 
 
-class Logger:
+class SchemonPythonLogger:
     def __init__(self, name: str, log_file: str = "schemon.log", level: str = "DEBUG"):
         log_level = logging._nameToLevel.get(level.upper(), logging.DEBUG)
         print(f"CONFIG | Log level: {level}({log_level}) for {name}")

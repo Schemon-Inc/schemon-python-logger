@@ -12,7 +12,7 @@ try:
 except ImportError:
     get_store = None
 
-from schemon_python_logger.logger import Logger
+from schemon_python_logger.logger import SchemonPythonLogger
 
 
 def log_method(func):
@@ -26,8 +26,8 @@ def log_method(func):
     def wrapper(self, *args, **kwargs):
         # Extract function name and initialize logger
         func_name = func.__name__
-        logger: Logger = None
-        if hasattr(self, "logger") and isinstance(self.logger, Logger):
+        logger: SchemonPythonLogger = None
+        if hasattr(self, "logger") and isinstance(self.logger, SchemonPythonLogger):
             logger = self.logger
         contract = None
         stage = None
@@ -115,13 +115,13 @@ def log_function(func):
     def wrapper(*args, **kwargs):
         # Extract function name and initialize logger
         func_name = func.__name__
-        logger: Logger = None
+        logger: SchemonPythonLogger = None
         contract = None
         stage = None
         entity_name = None
         row_count = None
         for arg in args:
-            if isinstance(arg, Logger):
+            if isinstance(arg, SchemonPythonLogger):
                 logger = arg
                 break
 
