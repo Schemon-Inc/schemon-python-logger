@@ -33,6 +33,7 @@ class SchemonPythonLogger:
         # Get the logger instance
         self.logger = logging.getLogger(name)
         self.logger.setLevel(log_level)
+        self.logger.propagate = False
 
         # Remove any existing handlers to avoid conflicts
         if self.logger.hasHandlers():
