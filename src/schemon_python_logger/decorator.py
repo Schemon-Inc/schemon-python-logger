@@ -132,10 +132,12 @@ def log_function(func):
                     contract = arg
 
         # Check if get_store and Contract are available before proceeding
-        if get_store and contract:
-            store = get_store(kwargs.get("stores"), contract)
-            stage = contract.stage
+        if contract:
             entity_name = contract.entity.name
+            stage = contract.stage
+
+        if get_store:
+            store = get_store(kwargs.get("stores"), contract)
 
             if store is None:
                 logger.error(
