@@ -40,12 +40,12 @@ def log_method(func):
                 if isinstance(arg, Contract):
                     contract = arg
 
+        if contract:
+            entity_name = contract.entity.name
+            stage = contract.stage
+
         # Check if get_store and Contract are available before proceeding
-        if (
-            get_store
-            and contract
-            and (func_name == "transform" or func_name == "write")
-        ):
+        if get_store and (func_name == "transform" or func_name == "write"):
             store = get_store(self.stores, contract)
             stage = contract.stage
             entity_name = contract.entity.name

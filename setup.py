@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = "0.0.12"
+VERSION = "0.0.13"
 
 
 setup(
@@ -13,6 +13,7 @@ setup(
     license_files=["LICENSE"],  # Specify the license file
     install_requires=[
         "pyspark==3.5.0",
+        "tabulate==0.9.0",
     ],
     entry_points={},
     python_requires=">=3.9",
