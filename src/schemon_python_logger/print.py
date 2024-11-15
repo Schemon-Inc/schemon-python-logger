@@ -9,6 +9,10 @@ def print_dict(d: dict, parent_key: str = ""):
     """
     Prints a dictionary in a nice table format, showing keys, values, and nesting.
     """
+    if not d:
+        print("Empty dict")
+        return
+
     rows = []
 
     def flatten_dict(d, parent_key):
